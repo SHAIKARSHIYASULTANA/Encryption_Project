@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    
+    <title>Light weight Homomorphic </title>
+    <!--<link rel="stylesheet" href="both.css">-->
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .column {
+        width: 45%;
+        padding: 10px;
+      }
+
+      #en,#de{
+        border-radius: 10px;
+        margin: 10px;
+        padding: 8px;
+        background-color: lemonchiffon;
+      }
+
+      #en:hover,#de:hover
+      {
+        background-color: lightpink;
+      }
+
+      label
+      {
+        font-size: 20px;
+        margin: 10px;
+      }
+
+      input
+      {
+        margin: 10px;
+      }
+
+      p,a{
+        margin: 8px;
+      }
+    </style>
+
+    <script>
+      function uploadFile(input) {
+          var fileSize = input.files[0].size / 1024; // Convert bytes to kilobytes
+          document.getElementById("file-size").innerHTML = "File size: " + fileSize.toFixed(2) + " KB";
+          document.getElementById("file-name").innerHTML = "File name: " + input.files[0].name;
+      }
+      function uploadFile2(input) {
+          var fileSize = input.files[0].size / 1024; // Convert bytes to kilobytes
+          document.getElementById("file-size2").innerHTML = "File size: " + fileSize.toFixed(2) + " KB";
+          document.getElementById("file-name2").innerHTML = "File name: " + input.files[0].name;
+      }
+    </script>
+
+  </head>
+
+  <body onload="displayFileInfo()">
+
+    <h1><center>Keyless Lightweight Encipher using Homomorphic and Binomial Coefficients</center></h1><br><br>
+
+    <div class="container">
+      <div class="column">
+        <form method="POST" action="/result" enctype="multipart/form-data" onsubmit="return true;">
+          <h2>Encryption</h2>
+          <label for="text_file"><b>Select a text file to encrypt:</b></label><br><br>
+          <input type="file" name="text_file" id="text_file" onchange="uploadFile(this)">
+          <p id="file-name"></p>
+          <p id="file-size"></p>
+          <p id="file_selection_time"></p>
+          {% if filename and file_type == 'encrypted' %}
+  <br><br>
+  <p margin="8px">Original file name: {{ original_name }}</p>
+  <p margin="8px">Original file size: {{ original_size }} KB</p>
+  <p>Uploaded time: {{ uploaded_time}}</p>
+  <p>Uploaded File Path:{{file_path}}</p>
+{% endif %}
+
+
+          <button type="submit" id="en" name="mode" value="encrypt" >Encrypt</button>
+          {% if filename and file_type == 'encrypted'%}
+  <br><br>
+  <p margin="8px">File size: {{ file_size|round(2) }} KB</p>
+  <p>Current time: {{ current_time}}</p>
+  <p>Encryption time: {{ uploaded_time_diff}}</p>
+
+  {% if file_type == 'encrypted' %}
+    <a href="/download/{{ file_type }}/{{ filename }}">Download Encrypted Text</a>
+  {% else %}
+    <a href="/download/{{ file_type }}/{{ filename }}">Download Decrypted Text</a>
+  {% endif %}
+{% endif %}
+        </form>
+      </div>
+
+      <div class="column">
+        <form method="POST" action="/result" enctype="multipart/form-data" onsubmit="return true;">
+          <h2>Decryption</h2>
+          <label for="encrypted_file"><b>Select an encrypted file to decrypt:</b></label><br><br>
+          <input type="file" name="encrypted_file" id="encrypted_file" onchange="uploadFile2(this)">
+          <p id="file-name2"></p>
+          <p id="file-size2"></p>
+          <p id="file_selection_time2"></p>
+          {% if filename and file_type == 'decrypted' %}
+  <br><br>
+  <p margin="8px">Original file name: {{ original_name }}</p>
+  <p margin="8px">Original file size: {{ original_size }} KB</p>
+  <p>Uploaded time: {{ uploaded_time}}</p>
+  <p>Uploaded File path:{{file_path}}</p>
+{% endif %}
+
+
+          <button type="submit" id="de" name="mode" value="decrypt">Decrypt</button>
+          {% if filename and file_type == 'decrypted'%}
+  <br><br>
+  <p margin="8px">File size: {{ file_size|round(2) }} KB</p>
+  <p>Current time: {{ current_time}}</p>
+  <p>Decryption time: {{ uploaded_time_diff}}</p>
+
+  {% if file_type == 'encrypted' %}
+    <a href="/download/{{ file_type }}/{{ filename }}">Download Encrypted Text</a>
+  {% else %}
+    <a href="/download/{{ file_type }}/{{ filename }}">Download Decrypted Text</a>
+  {% endif %}
+{% endif %}
+        </form>
+      </div>
+    </div>
+
+
+  </body>
+</html>
+
